@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iotics/core/Api/data.dart';
+
 import '../../core/Api/Models/sign_up_model/sign_up_model.dart';
 import '../../core/constant widgets/buttonwidget.dart';
 import '../../core/constant widgets/textwidget.dart';
@@ -41,6 +42,7 @@ class LogInScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 50),
                   TxtField(
+                    icon: const Icon(Icons.person),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'This field is required';
@@ -52,6 +54,7 @@ class LogInScreen extends StatelessWidget {
                     pass: false,
                   ),
                   TxtField(
+                    icon: const Icon(Icons.lock),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'This field is required';
@@ -71,6 +74,7 @@ class LogInScreen extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: ((context) =>
                                       const OrderListingScreen())));
+                          TasteDb().pushDeviceKey();
                         } else {
                           return;
                         }
