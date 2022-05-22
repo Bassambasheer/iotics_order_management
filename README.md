@@ -1,8 +1,8 @@
 # iotics
-in debug mode :-
- -In command line run - flutter run
+in debug mode 
+-In command line run - flutter run
  -Wait for the program to be Installed
- -After installation you will be landiing to a Login Screen type the below given Username and Password
+ -After installation you will be landiing to a Login Screen , type the below given Username and Password
  Username - admin@taste.com
  Password - password
  - Click on login button
