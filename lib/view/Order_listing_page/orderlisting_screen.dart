@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iotics/core/Api/data.dart';
 import 'package:iotics/core/constant%20widgets/textwidget.dart';
 import 'package:iotics/core/controller/listing_screen_controller.dart';
 import 'package:iotics/theme/theme.dart';
@@ -23,28 +24,33 @@ class OrderListingScreen extends StatelessWidget {
         body: SafeArea(
           child: ctrl.itemlist.isEmpty
               ? const Center(child: CircularProgressIndicator())
-              : ListView.builder(
-                  itemCount: ctrl.itemlist.length,
-                  itemBuilder: (context, index) {
-                    final _list = ctrl.itemlist[index];
-                    return Card(
-                      child: ListTile(
-                        title: TextWidget(txt: "Order No :${_list.id}"),
-                        subtitle: TextWidget(txt: _list.orderAt.toString()),
-                        trailing: TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => OrderDetailScreen(
-                                        id: _list.id!,
-                                      )));
-                            },
-                            child: const TextWidget(
-                              txt: "View Details",
-                              clr: black,
-                            )),
-                      ),
-                    );
+              : RefreshIndicator(
+                  onRefresh: () {
+                    return ctrl.listing();
                   },
+                  child: ListView.builder(
+                    itemCount: ctrl.itemlist.length,
+                    itemBuilder: (context, index) {
+                      final _list = ctrl.itemlist[index];
+                      return Card(
+                        child: ListTile(
+                          title: TextWidget(txt: "Order No :${_list.id}"),
+                          subtitle: TextWidget(txt: _list.orderAt.toString()),
+                          trailing: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => OrderDetailScreen(
+                                          id: _list.id!,
+                                        )));
+                              },
+                              child: const TextWidget(
+                                txt: "View Details",
+                                clr: black,
+                              )),
+                        ),
+                      );
+                    },
+                  ),
                 ),
         ),
       );
