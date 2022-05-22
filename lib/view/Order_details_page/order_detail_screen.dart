@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iotics/core/constant%20widgets/buttonwidget.dart';
@@ -10,8 +8,10 @@ import 'package:iotics/view/Order_details_page/widgets/tile.dart';
 class OrderDetailScreen extends StatelessWidget {
   OrderDetailScreen({required this.id, Key? key}) : super(key: key);
   int id;
+  RxBool status = false.obs;
   @override
   Widget build(BuildContext context) {
+    status.value = false;
     final obj = Get.put(DetailsController());
     obj.datas = null;
     obj.getDetails(id);
@@ -95,17 +95,25 @@ class OrderDetailScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ctrl.datas!.status.toString() == "pending"
-                              ? ButtonWidget(
-                                  txt: "Confirm Order",
-                                  ontap: () {
-                                    log(ctrl.datas!.status.toString());
-                                    final confirmed = ctrl.orderConfirm(
-                                        id, ctrl.datas!.totalItems!);
-                                  })
-                              : const TextWidget(txt: "Order Confrimed"))
+                      Obx(() {
+                        return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ctrl.datas!.status.toString() == "placed" &&
+                                    status.value == false
+                                ? ButtonWidget(
+                                    txt: "Accept Order",
+                                    ontap: () async {
+                                      final confirm =
+                                          await ctrl.orderConfirm(id);
+                                      if (confirm == true) {
+                                        status.value = true;
+                                      }
+                                      ctrl.getDetails(id);
+                                    })
+                                : status.value == true
+                                    ? const TextWidget(txt: "Order Accepted")
+                                    :const TextWidget(txt: "Order Accepted"));
+                      })
                     ],
                   ),
                 )

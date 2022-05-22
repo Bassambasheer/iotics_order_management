@@ -12,7 +12,7 @@ abstract class Api {
   Future<List<Datum>> getLiveOrders();
   pushDeviceKey();
   Future<OrderDetailModel?> orderDetail(int id);
-  Future<bool?> statusChange(int id, String statusid);
+  Future<bool?> statusChange(int id);
 }
 
 class TasteDb extends Api {
@@ -56,11 +56,6 @@ class TasteDb extends Api {
           'Accept': 'application/json',
           'Authorization': "ExponentPushToken[btdZZKNYVCn7P5bAnSO8U-]"
         });
-    if (response.statusCode == 200) {
-      log("authorized");
-    } else {
-      log("unauthorized");
-    }
   }
 
   @override
@@ -80,11 +75,11 @@ class TasteDb extends Api {
   }
 
   @override
-  Future<bool?> statusChange(int id, String statusid) async {
+  Future<bool?> statusChange(int id) async {
     final response = await http.post(
         Uri.parse(
             "https://dashboard-api-staging.eatroot.io/api/orders/change-status"),
-        body: json.encode({"order_id": "${id}", "status_id": statusid}),
+        body: json.encode({"order_id": "${id}", "status_id": 7}),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
